@@ -1,0 +1,43 @@
+
+SENSOR: IN_a, IN_b, IN_s, OUT_y;
+ 
+program: mux21()
+[VAR: LOGIC_a, LOGIC_b, LOGIC_s, LOGIC_y]
+{
+    TRIGGER (TRUE)
+    {
+        LOGIC_a << IN_a;
+        LOGIC_b << IN_b;
+        LOGIC_s << IN_s;
+
+        IF (LOGIC_s == '0’){
+            LOGIC_a >> LOGIC_y;
+        }
+        ELSE{
+            LOGIC_b >> LOGIC_y;
+        }
+    }
+}
+ 
+constraint : FPGA {IN_a, IN_b, IN_s, OUT_y};
+
+
+
+program : main(PARAM: x) [VAR: y]
+{
+        TRIGGER(TRUE){
+                x << Device1;
+                y << Device2;
+                WHILE(y < 100) {
+                        IF(x < 2) {
+                                y := y + 1;
+                        }
+                        ELSE {
+                                y := x * 2;
+                                x := y + 1;
+                        }
+                        y := y * 2;
+                        y >> Device3;
+                }
+        }
+}

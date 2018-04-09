@@ -1,0 +1,76 @@
+SENSOR: pathSensor, sensor1, sensor2, sortSensor;
+DEVICE: PATHSET, SREAD1, SWRITE1, SREAD2, SWRITE2, SCANNER, SORTSET;
+
+function : checkProduct(PARAM: info) [VAR: check, n]
+{
+   check := FALSE;
+   IF (info == 50){
+       check := TRUE;
+   }
+
+   RETURN: 1;
+}
+
+program : sorting(PARAM: cycles, countQuality, countUnQuality)
+[VAR: cycles, countQuality, countUnQuality, info1, info2, mark1, mark2, mark, picked]
+{
+    TRIGGER (pathSensor == TRUE)
+    {
+       cycles := cycles + 1;
+       IF (cycles % 2 == 1)
+       {
+           PATHSET << 'path1';
+       }
+       ELSIF (cycles % 2 == 0)
+       {
+           PATHSET << 'path2';
+       }
+    }
+
+    TRIGGER (sensor1 == TRUE)
+    {
+       info1 << SREAD1;
+       mark1 := checkProduct(info1);
+       mark1 >> SWRITE1;
+    }
+
+    TRIGGER (sensor2 == TRUE)
+    {
+       info2 << SREAD2;
+       mark2 := checkProduct(info2);
+       mark2 >> SWRITE2;
+    }
+
+    TRIGGER (sortSensor == TRUE)
+    {
+        mark << SCANNER;
+        IF (mark == TRUE)
+        {
+            SORTSET << 'Quality';
+            countQuality := countQuality + 1;
+        }
+        ELSE
+        {
+            SORTSET << 'UnQuality';
+            countUnQuality := countUnQuality + 1;
+        }
+        picked := TRUE;
+    }
+
+    TRIGGER(picked == TRUE)
+    {
+        IF(countUnQuality / countQuality > 0.01)
+        {
+            STOP;
+        }
+        picked := FALSE;
+    }
+
+}
+
+
+
+constraint : B { pathSensor, PATHSET};
+constraint : C { sensor1, sensor2, SREAD1, PATHSET};
+constraint : D { SREAD1, SWRITE1, SREAD2, SORTSET};
+constraint : A { SCANNER, sortSensor, SWRITE1, SWRITE2};

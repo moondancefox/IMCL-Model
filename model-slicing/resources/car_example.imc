@@ -1,0 +1,30 @@
+DEVICE: receiver1, receiver2, receiver3;
+
+
+program : sorting(PARAM: cycles, countQuality, countUnQuality)
+[VAR: cycles, countQuality, countUnQuality, info1, info2, mark1, mark2, mark, picked]
+{
+    TRIGGER (TRUE)
+    {
+       cycles := cycles + 1;
+       IF (cycles % 2 == 1)
+       {
+           PATHSET << 'path1';
+       }
+       ELSIF (cycles % 2 == 0)
+       {
+           PATHSET << 'path2';
+       }
+    }
+
+    TRIGGER (sensor1 == TRUE)
+    {
+       info1 << SREAD1;
+       mark1 := checkProduct(info1);
+       mark1 >> SWRITE1;
+    }
+}
+
+
+constraint : CAR1 { receiver1 };
+constraint : CAR2 { receiver2 };

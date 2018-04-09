@@ -1,0 +1,92 @@
+CU_A
+    TRIGGER (sortSensor == TRUE)
+    {
+        mark << SCANNER;
+        IF (mark == TRUE)
+        {
+            countQuality := countQuality + 1;
+        }
+        ELSE
+        {
+            countUnQuality := countUnQuality + 1;
+        }
+        CHANNEL ! 1;
+    }
+
+CU_B
+    TRIGGER(CHANNEL ? 1)
+    {
+        IF(countUnQuality + countQuality > 10)
+        {
+            STOP;
+        }
+    }
+
+
+CU_C
+    TRIGGER (sensor2 == TRUE)
+    {
+       info2 << SREAD2;
+       CHANNEL ! 2;
+       CHANNEL ! 3 : info2;
+    }
+
+
+CU_D
+    TRIGGER (CHANNEL ? 2)
+    {
+        CHANNEL ? 3 : info2;
+        mark2 := checkProduct(info2);
+        mark2 >> SWRITE2;
+    }
+
+
+
+    TRIGGER(pathSensor == TRUE)
+    {
+        s := 1;
+        IF(sensor2 == TRUE)
+        {
+            PATHSET << '222';
+            s:=23;
+        }
+    }
+
+
+    TRIGGER(TRUE)
+    {
+        countQuality := 0;
+        countUnQuality := 0;
+        IF (pathSensor == TRUE)
+        {
+            countQuality := countQuality + 1;
+            countQuality >> SWRITE1;
+        }
+        ELSE
+        {
+            countUnQuality := countUnQuality + 1;
+            countUnQuality >> SWRITE2;
+        }
+
+        cycles := countQuality + countUnQuality;
+    }
+
+
+program : example(PARAM: x) [VAR: y]
+{
+    TRIGGER(TRUE){
+        x << Device_1;
+        y := Device_2;
+        WHILE(y < 100) {
+            IF(x < 2) {
+                y := y + 1;
+            }
+            ELSE {
+                y := x * 2;
+                x := y + 1;
+            }
+            y := y * 2;
+            y >> Device_3;
+        }
+    }
+}

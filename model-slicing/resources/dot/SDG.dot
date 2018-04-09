@@ -1,0 +1,33 @@
+digraph G
+{
+"Line 0: checkProduct(PARAM:info)"->"Line 1: check:=FALSE;"
+"Line 0: checkProduct(PARAM:info)"->"Line 2: IF(info==50)"
+"Line 0: checkProduct(PARAM:info)"->"Line 4: TRIGGER(picked==TRUE)"
+"Line 0: checkProduct(PARAM:info)"->"Line 7: RETURN:1;"
+"Line 2: IF(info==50)"->"Line 3: check:=TRUE;"
+"Line 4: TRIGGER(picked==TRUE)"->"Line 5: IF(countUnQuality/countQuality>0.01)"
+"Line 5: IF(countUnQuality/countQuality>0.01)"->"Line 6: STOP;"
+"Line 0: checkProduct(PARAM:info)"->"Line 2: IF(info==50)"[style=dotted]
+"Line 0: sorting()"->"Line 1: TRIGGER(sortSensor==TRUE)"
+"Line 0: sorting()"->"Line 10: TRIGGER(picked==TRUE)"
+"Line 1: TRIGGER(sortSensor==TRUE)"->"Line 2: mark<<SCANNER;"
+"Line 1: TRIGGER(sortSensor==TRUE)"->"Line 3: IF(mark==TRUE)"
+"Line 1: TRIGGER(sortSensor==TRUE)"->"Line 9: picked:=TRUE;"
+"Line 3: IF(mark==TRUE)"->"Line 4: SORTSET<<'Quality';"
+"Line 3: IF(mark==TRUE)"->"Line 5: countQuality:=countQuality+1;"
+"Line 3: IF(mark==TRUE)"->"Line 6: ELSE"
+"Line 6: ELSE"->"Line 7: SORTSET<<'UnQuality';"
+"Line 6: ELSE"->"Line 8: countUnQuality:=countUnQuality+1;"
+"Line 10: TRIGGER(picked==TRUE)"->"Line 11: IF(countUnQuality/countQuality>0.01)"
+"Line 11: IF(countUnQuality/countQuality>0.01)"->"Line 12: STOP;"
+"Line 0: sorting()"->"Line 5: countQuality:=countQuality+1;"[style=dotted]
+"Line 0: sorting()"->"Line 8: countUnQuality:=countUnQuality+1;"[style=dotted]
+"Line 0: sorting()"->"Line 10: TRIGGER(picked==TRUE)"[style=dotted]
+"Line 0: sorting()"->"Line 11: IF(countUnQuality/countQuality>0.01)"[style=dotted]
+"Line 2: mark<<SCANNER;"->"Line 3: IF(mark==TRUE)"[style=dotted]
+"Line 2: mark<<SCANNER;"->"Line 6: ELSE"[style=dotted]
+"Line 5: countQuality:=countQuality+1;"->"Line 5: countQuality:=countQuality+1;"[style=dotted]
+"Line 5: countQuality:=countQuality+1;"->"Line 11: IF(countUnQuality/countQuality>0.01)"[style=dotted]
+"Line 8: countUnQuality:=countUnQuality+1;"->"Line 8: countUnQuality:=countUnQuality+1;"[style=dotted]
+"Line 8: countUnQuality:=countUnQuality+1;"->"Line 11: IF(countUnQuality/countQuality>0.01)"[style=dotted]
+}

@@ -1,0 +1,22 @@
+digraph G
+{
+"Statement 0: example(PARAM:x)"->"Statement 1: TRIGGER(TRUE)"
+"Statement 1: TRIGGER(TRUE)"->"Statement 2: x:=1;"
+"Statement 1: TRIGGER(TRUE)"->"Statement 3: y:=2;"
+"Statement 1: TRIGGER(TRUE)"->"Statement 4: WHILE(x<100)"
+"Statement 4: WHILE(x<100)"->"Statement 5: IF(x<20)"
+"Statement 4: WHILE(x<100)"->"Statement 10: x:=y*2;"
+"Statement 5: IF(x<20)"->"Statement 6: y:=y+1;"
+"Statement 5: IF(x<20)"->"Statement 7: ELSE"
+"Statement 7: ELSE"->"Statement 8: y:=y+1;"
+"Statement 7: ELSE"->"Statement 9: y:=y*y;"
+"Statement 2: x:=1;"->"Statement 4: WHILE(x<100)"[style=dotted]
+"Statement 2: x:=1;"->"Statement 5: IF(x<20)"[style=dotted]
+"Statement 2: x:=1;"->"Statement 7: ELSE"[style=dotted]
+"Statement 3: y:=2;"->"Statement 6: y:=y+1;"[style=dotted]
+"Statement 3: y:=2;"->"Statement 8: y:=y+1;"[style=dotted]
+"Statement 6: y:=y+1;"->"Statement 10: x:=y*2;"[style=dotted]
+"Statement 8: y:=y+1;"->"Statement 9: y:=y*y;"[style=dotted]
+"Statement 9: y:=y*y;"->"Statement 10: x:=y*2;"[style=dotted]
+"Statement 10: x:=y*2;"->"Statement 4: WHILE(x<100)"[style=dotted]
+}

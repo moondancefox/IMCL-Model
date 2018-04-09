@@ -1,0 +1,8 @@
+digraph G
+{
+"Statement 0: checkProduct(PARAM:info)"->"Statement 1: check:=FALSE;"
+"Statement 0: checkProduct(PARAM:info)"->"Statement 2: IF(info==50)"
+"Statement 0: checkProduct(PARAM:info)"->"Statement 4: RETURN:1;"
+"Statement 2: IF(info==50)"->"Statement 3: check:=TRUE;"
+"Statement 0: checkProduct(PARAM:info)"->"Statement 2: IF(info==50)"[style=dotted]
+}

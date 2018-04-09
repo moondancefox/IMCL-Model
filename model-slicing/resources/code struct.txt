@@ -1,0 +1,37 @@
+sorting()
+	cycles:=0;
+	TRIGGER(pathSensor==TRUE)
+		cycles:=cycle+1;
+		IF(cycles%2==1)
+			PATHSET<<'path1';
+			ELSIF(cycles%2==0)
+				PATHSET<<'path2';
+	TRIGGER(sensor1==TRUE)
+		info1<<SREAD1;
+		mark1:=checkProduct(info1);
+		mark1>>SWRITE1;
+	TRIGGER(sensor2==TRUE)
+		info2<<SREAD2;
+		mark2:=checkProduct(info2);
+		mark2>>SWRITE2;
+	TRIGGER(sortSensor==TRUE)
+		mark<<SCANNER;
+		IF(mark==TRUE)
+			SORTSET<<'Quality';
+			countQuality:=countQuality+1;
+			ELSE
+				SORTSET<<'UnQuality';
+				countUnQuality:=countUnQuality+1;
+	IF(countUnquality/countQuality>0.01)
+		STOP;
+
+
+
+
+checkProduct(PARAM:info,a)
+	check:=FALSE;
+	IF(info==50)
+		check:=TRUE;
+		ELSE
+		    check:=FALSE;
+	RETURN:check;

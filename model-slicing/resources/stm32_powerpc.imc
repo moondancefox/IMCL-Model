@@ -1,0 +1,24 @@
+DEVICE: varA, varB, varC, numA, Scream;
+
+program : CmpMax(PARAM: a, b, c, aa)[VAR: result]
+{
+    TRIGGER (TRUE)
+    {
+        varA := a;
+        numA := aa;
+        varB := b;
+        varC := c;
+        result := numA;
+
+        result := result + varB;
+        result := result * varA;
+        result := result + varC;
+
+        result >> Scream;
+    }
+}
+
+
+constraint : A { varA, numA };
+constraint : B { varB };
+constraint : C { varC, Scream };
